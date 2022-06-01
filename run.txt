@@ -1,0 +1,1 @@
+java -cp "C:\Users\user\P2-PSBO-Kelompok-6\postgresql-42.3.6.jar;C:\Users\user\P2-PSBO-Kelompok-6" Main.java
