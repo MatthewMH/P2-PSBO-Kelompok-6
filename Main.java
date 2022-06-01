@@ -1,5 +1,4 @@
-import java.util.Scanner;
-import java.util.UUID;
+import java.util.*;
 
 public class Main
 {
@@ -9,7 +8,13 @@ public class Main
         System.out.println("-------------------------------------");
         System.out.println("-------------------------------------\n");
 
-       while(true)
+        int seller_ind = 0;
+        int buyer_ind = 0;
+
+        Seller seller = new Seller();
+
+        //login signup
+        while(true)
         {
             System.out.println("If you are a buyer press 0");
             System.out.println("If you are a seller press 1");
@@ -17,7 +22,6 @@ public class Main
 
             Scanner inp = new Scanner(System.in);
             int choice = inp.nextInt();
-
 
             if(choice == 0)
             {
@@ -38,9 +42,7 @@ public class Main
                 }
             }
             else if(choice == 1)
-            {
-                Seller seller = new Seller();
-
+            {   
                 while(true)
                 {
                     System.out.println("\nChoose 0 for Login");
@@ -59,20 +61,20 @@ public class Main
                         System.out.printf("Password : ");
                         String password = inp.nextLine();
                         seller.login(username, password);
+                        seller_ind = 1;
+                        break;
                     }
                     else if(c == 1)
                     {
                         String uniqueID = UUID.randomUUID().toString();
-                        System.out.printf("Name : ");
-                        String dummy = inp.nextLine();
-                        String nama = inp.nextLine();
                         System.out.printf("Username : ");
+                        String dummy = inp.nextLine();
                         String username = inp.nextLine();
                         System.out.printf("Password : ");
                         String password = inp.nextLine();
                         System.out.printf("Location : ");
                         String location = inp.nextLine();
-                        seller.sign_up(uniqueID, nama, username, password, location, 0);
+                        seller.sign_up(uniqueID, username, password, location, 0);
                     }
                     else if(c == 2)
                     {
@@ -89,6 +91,23 @@ public class Main
                 System.out.println("Invalid Input!");
                 System.out.println("Please Choose 0 or 1!\n");
             }
+
+            if(seller_ind == 1 || buyer_ind == 1)
+            {
+                break;
+            }
         }
+
+        //after login
+        if(seller_ind == 1)
+        {
+            seller.show_main_screen();
+
+        }
+        else if(buyer_ind == 1)
+        {
+
+        }
+
     }
 }
