@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.util.*;
 
 public class Seller extends end_user
 {
@@ -72,24 +73,46 @@ public class Seller extends end_user
         return this.amount;
     }
 
-    public void show_main_screen()
+    public void add_item(String item_name, double price, int count)
     {
-        System.out.printf("===========Welcome to TokoApp, %s!===========\n\n", get_username());
-        System.out.printf("Amount : %.2f\n", get_amount());
-        System.out.printf("\nItem for Sale:\n");
-    }
+        try{
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/TokoApp","postgres", "password");
+            Item it = new Item();
+            String id_item = UUID.randomUUID().toString();
 
-    public void add_item()
-    {
-
+            it.set_item(id_item, item_name, price, count);
+            
+            String sf = "INSERT INTO public.item(id_item, item_name, price, id_seller, count) VALUES(?,?,?,?,?)";
+            PreparedStatement stmt = c.prepareStatement(sf);
+            stmt.setObject(1, id_item);
+            stmt.setObject(2, item_name);
+            stmt.setObject(3, price);
+            stmt.setObject(4, this.id);
+            stmt.setObject(5, count);
+            stmt.execute();
+            c.close();
+        } catch(SQLException e)
+        {
+            System.out.println(e.getMessage());
+        }
     }
     public void show_item()
     {
 
     }
-    public void delete_item()
+    public void delete_item(String item_name)
     {
-
+        try{
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/TokoApp","postgres", "password");
+            String sf = "DELETE FROM public.item WHERE id_seller = ? AND item_name = ?";
+            PreparedStatement stmt = c.prepareStatement(sf);
+            stmt.setObject(1, this.id);
+            stmt.setObject(2, item_name);
+            stmt.execute();
+            c.close();
+        } catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
     }
     public void selling_history()
     {
