@@ -1,5 +1,6 @@
 import java.sql.*;
 import java.util.*;
+import java.io.*;
 
 public class Seller extends end_user
 {
@@ -91,14 +92,45 @@ public class Seller extends end_user
             stmt.setObject(5, count);
             stmt.execute();
             c.close();
-        } catch(SQLException e)
-        {
+        } catch(SQLException e){
             System.out.println(e.getMessage());
         }
     }
     public void show_item()
     {
-
+        try{
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/TokoApp","postgres", "password");
+            String sf = "SELECT * FROM public.item WHERE id_seller = ?";
+            PreparedStatement stmt = c.prepareStatement(sf);
+            stmt.setObject(1, this.id);
+            ResultSet rs = stmt.executeQuery();
+            
+            ArrayList<Item> item_sold = new ArrayList<Item>();
+            int length = 0;
+            while(rs.next())
+            {
+                Item it = new Item();
+                it.set_item(rs.getString("id_item"), rs.getString("item_name"), rs.getDouble("price"), rs.getInt("count"));
+                item_sold.add(it);
+                if(rs.getString("item_name").length() > length)
+                {
+                    length = rs.getString("id_item").length();
+                }
+            }
+            String leftAlignFormat = "| %-35s | %-32.2f | %23d | %n";
+            System.out.format("+-------------------------------------+----------------------------------+-------------------------+%n");
+            System.out.format("|               ITEM NAME             |              PRICE               |            COUNT        |%n");
+            System.out.format("+-------------------------------------+----------------------------------+-------------------------+%n");
+            for (int i = 0; i < item_sold.size(); i++) 
+            {
+                System.out.format(leftAlignFormat, item_sold.get(i).get_item_name(), item_sold.get(i).get_price(), 
+                item_sold.get(i).get_count());
+            }
+            System.out.format("+-------------------------------------+----------------------------------+-------------------------+%n");
+            c.close();
+        } catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
     }
     public void delete_item(String item_name)
     {
@@ -121,5 +153,18 @@ public class Seller extends end_user
     public void transfer_amount()
     {
 
+    }
+
+    public void clrscr()
+    {
+        //Clears Screen in java
+        try {
+            if (System.getProperty("os.name").contains("Windows"))
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            else
+                Runtime.getRuntime().exec("clear");
+        } catch (IOException | InterruptedException ex) {
+            
+        }
     }
 }

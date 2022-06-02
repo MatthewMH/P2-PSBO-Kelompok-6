@@ -1,4 +1,5 @@
 import java.util.*;
+import java.io.*;
 
 public class Main
 {
@@ -102,11 +103,13 @@ public class Main
         //after login
         if(seller_ind == 1)
         {
+            seller.clrscr();
             while(true)
             {
                 System.out.printf("===========Welcome to TokoApp, %s!===========\n\n", seller.get_username());
                 System.out.printf("Amount : %.2f\n", seller.get_amount());
                 System.out.printf("\nItem for Sale:\n");
+                seller.show_item();
 
                 System.out.println("\nPress:");
                 System.out.println("1) Add Item");
@@ -127,6 +130,7 @@ public class Main
                     int count = inp.nextInt();
                     seller.add_item(item_name, price, count);
                     System.out.println("Item Added Successfully!");
+                    seller.clrscr();
                 }
                 else if(choice == 2)
                 {
@@ -143,10 +147,11 @@ public class Main
                     {
                         seller.delete_item(item_name);
                         System.out.println("Item deleted successfully!");
+                        seller.clrscr();
                     }
                     else if(c == 2)
                     {
-                        
+                        seller.clrscr();
                     }
                 }
             }

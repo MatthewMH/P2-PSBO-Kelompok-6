@@ -20,4 +20,19 @@ public class Item
         this.price = price;
         this.count = count;
     }
+
+    public String get_item_name()
+    {
+        return this.item_name;
+    }
+
+    public double get_price()
+    {
+        return this.price;
+    }
+
+    public int get_count()
+    {
+        return this.count;
+    }
 }
