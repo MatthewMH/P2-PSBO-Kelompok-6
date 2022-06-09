@@ -20,3 +20,6 @@ Route::get('/', function () {
 
 Route::post('/seller/signup', [SellerController::class, 'signup']);
 Route::post('/seller/login', [SellerController::class, 'login']);
+Route::post('/seller/add_item', [SellerController::class, 'add_item']);
+Route::post('/seller/show_item', [SellerController::class, 'show_item']);
+Route::post('/seller/delete_item', [SellerController::class, 'delete_item']);

@@ -8,7 +8,7 @@ use App\Models\Seller;
 
 interface User_activity
 {
-    public function saves($email, $username, $password, $location, $contact);
+    public function signup($email, $username, $password, $location, $contact);
     public function login($username, $password);
 }
 

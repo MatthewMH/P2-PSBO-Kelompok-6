@@ -29,7 +29,7 @@ class SellerController extends Controller
         else
         {
             $user = UserFactory::makeSeller();
-            $user->saves($request->email, $request->username, $request->password, $request->location, $request->contact);
+            $user->signup($request->email, $request->username, $request->password, $request->location, $request->contact);
 
             return response()->json(["message" => "Sign Up Successful!"]);
         }
@@ -52,15 +52,52 @@ class SellerController extends Controller
 
     public function add_item(Request $request)
     {
+        $user = UserFactory::makeSeller();
         $user->add_item($request->username, $request->item_name, $request->price, $request->count);
+
+        return response()->json(["message" => "Item Added Successfully!"]);
     }
 
-    public function show_item()
+    public function show_item(Request $request)
+    {
+        $user = UserFactory::makeSeller();
+        $items = $user->show_item($request->username);
+
+        if(!$items)
+        {
+            return response()->json(["message" => "No Item!"]);
+        }
+        else
+        {
+            return response()->json(["message" => "Item shown!"]);
+        }
+    }
+
+    public function delete_item(Request $request)
+    {
+        $user = UserFactory::makeSeller();
+        $delete = $user->delete_item($request->username, $request->item_name, $request->count);
+
+        if($delete == 0)
+        {
+            return response()->json(["message" => "Number of item to be deleted is higher than stock!"]);
+        }
+        else if($delete == 1)
+        {
+            return response()->json(["message" => "Item deleted!"]);
+        }
+        else
+        {
+            return response()->json(["message" => "Stock reduced!"]);
+        }
+    }
+
+    public function selling_history()
     {
         
     }
 
-    public function delete_item()
+    public function transfer_amount()
     {
         
     }
