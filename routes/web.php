@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SellerController;
-
+use App\Http\Controllers\BuyerController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,3 +23,5 @@ Route::post('/seller/login', [SellerController::class, 'login']);
 Route::post('/seller/add_item', [SellerController::class, 'add_item']);
 Route::post('/seller/show_item', [SellerController::class, 'show_item']);
 Route::post('/seller/delete_item', [SellerController::class, 'delete_item']);
+Route::post('/buyer/signup', [BuyerController::class, 'signup']);
+Route::post('/buyer/login', [BuyerController::class, 'login']);
