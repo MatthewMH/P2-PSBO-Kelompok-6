@@ -31,21 +31,25 @@ class Seller implements User_activity
     public function add_item($username, $item_name, $price, $count)
     {
         $id_seller = collect(DB::select('select id from sellers where username = ?', [$username]))->pluck('id');
-        $item = DB::select('select * from items where item_name = ? and idseller = ?', [$item_name, $id_seller[0]]);
+        $item = new Item();
+        $item->item_name = $item_name;
+        $item->price = $price;
+        $item->count = $count;
+        $select = DB::select('select * from items where item_name = ? and idseller = ?', [$item->item_name, $id_seller[0]]);
 
-        if(!$item)
+        if(!$select)
         {
             DB::table('items')->insert([
                 'idseller' => $id_seller[0],
-                'item_name' => $item_name,
-                'price' => $price,
-                'count' => $count
+                'item_name' => $item->item_name,
+                'price' => $item->price,
+                'count' => $item->count
             ]);
         }
         else
         {
-            $count_prev = collect(DB::select('select count from items where item_name = ? and idseller = ?', [$item_name, $id_seller[0]]))->pluck('count');
-            $affected = DB::table('items')->where('idseller', $id_seller[0])->where('item_name', $item_name)->update(['count' => $count_prev[0] + $count]);
+            $count_prev = collect(DB::select('select count from items where item_name = ? and idseller = ?', [$item->item_name, $id_seller[0]]))->pluck('count');
+            $affected = DB::table('items')->where('idseller', $id_seller[0])->where('item_name', $item->item_name)->update(['count' => $count_prev[0] + $count]);
         }
     }
 

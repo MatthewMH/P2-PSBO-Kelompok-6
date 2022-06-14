@@ -5,7 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Review extends Model
+class Delivery extends Model
 {
-    use HasFactory;
+    public $delivery_name;
+    public $delivery_price;
+
+    public $timestamps = false;
 }

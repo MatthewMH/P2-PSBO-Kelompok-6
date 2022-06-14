@@ -25,6 +25,9 @@ return new class extends Migration
             $table->foreignId('idseller')->references('id')->on('sellers');
             $table->foreignId('idbuyer')->references('id')->on('buyers');
             $table->foreignId('iditem')->references('id')->on('items');
+            $table->double('price', 8, 2);
+            $table->integer('count');
+            $table->double('total_price', 8, 2);
         });
     }
 

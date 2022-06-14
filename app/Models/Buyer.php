@@ -48,16 +48,6 @@ class Buyer implements User_activity
 
     }
 
-    public function pay_item()
-    {
-
-    }
-
-    public function choose_delivery()
-    {
-
-    }
-
     public function buying_history()
     {
 
@@ -68,24 +58,10 @@ class Buyer implements User_activity
 
     }
 
-    public function add_amount()
+    public function add_amount($username, $amount)
     {
         $id_buyer = collect(DB::select('select id from buyers where username = ?', [$username]))->pluck('id');
-        $amount = collect(DB::select('select amount from buyers where amount = ?', [$amount]))->pluck('amount');
-
-        if(!$item)
-        {
-            DB::table('buyers')->insert([
-                'idbuyer' => $id_buyer[0],
-                'amount' => $amount
-            ]);
-        }
-        else
-        {
-            $amount_prev = collect(DB::select('select amount from buyers where amount = ?',[$amount]))->pluck('amount');
-            $affected = DB::table('buyers')->where('idbuyer', $id_buyer[0])->where('amount', $amount)->update(['amount' => $amount_prev[0] + $amount]);
-        }
+        $amount_prev = collect(DB::select('select amount from buyers where id = ?', [$id_buyer[0]]))->pluck('amount');
+        $affected = DB::table('buyers')->where('id', $id_buyer[0])->update(['amount' => $amount_prev[0] + $amount]);
     }
-
-    use HasFactory;
 }
