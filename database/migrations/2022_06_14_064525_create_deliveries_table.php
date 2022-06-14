@@ -7,24 +7,16 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * The database connection that should be used by the migration.
-     *
-     * @var string
-     */
-    protected $connection = 'pgsql';
-
-    /**
      * Run the migrations.
      *
      * @return void
      */
     public function up()
     {
-        Schema::connection('pgsql')->create('reviews', function (Blueprint $table) {
+        Schema::create('deliveries', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('idbuyer')->references('id')->on('buyers');
-            $table->string('review');
-            $table->timestamps();
+            $table->string('delivery_name');
+            $table->double('delivery_price', 8, 2);
         });
     }
 
@@ -35,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('reviews');
+        Schema::dropIfExists('deliveries');
     }
 };
