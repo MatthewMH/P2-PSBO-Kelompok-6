@@ -23,8 +23,9 @@ return new class extends Migration
         Schema::connection('pgsql')->create('reviews', function (Blueprint $table) {
             $table->id();
             $table->foreignId('idbuyer')->references('id')->on('buyers');
+            $table->foreignId('iditem')->references('id')->on('items');
+            $table->foreignId('idseller')->references('id')->on('sellers');
             $table->string('review');
-            $table->timestamps();
         });
     }
 
