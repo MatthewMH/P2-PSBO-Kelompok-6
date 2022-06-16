@@ -61,16 +61,9 @@ class BuyerController extends Controller
     public function buy_item(Request $request)
     {
         $user = UserFactory::makeBuyer();
-        $buy = $user->buy_item($request->username);
+        $buy = $user->buy_item($request->buyer_username, $request->seller_username, $request->item, $request->price, $request->count, $request->delivery);
 
-        if(!$items)
-        {
-            return response()->json(["message" => "No Item!"]);
-        }
-        else
-        {
-            return response()->json(["message" => "Item shown!"]);
-        }
+        return response()->json(["message" => "Item bought!"]);
     }
 
 
