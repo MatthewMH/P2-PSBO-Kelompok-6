@@ -92,13 +92,26 @@ class SellerController extends Controller
         }
     }
 
-    public function selling_history()
+    public function selling_history(Request $request)
     {
-        
+        $user = UserFactory::makeSeller();
+        $hist = $user->selling_history($request->username);
+
+        if(!$hist)
+        {
+            return response()->json(["message" => "No selling record found!"]);
+        }
+        else
+        {
+            return response()->json(["message" => "Selling records shown!"]);
+        }
     }
 
-    public function transfer_amount()
+    public function transfer_amount(Request $request)
     {
-        
+        $user = UserFactory::makeSeller();
+        $user->transfer_amount($request->username, $request->amount);
+
+        return response()->json(["message" => "Amount Transfered!"]);
     }
 }

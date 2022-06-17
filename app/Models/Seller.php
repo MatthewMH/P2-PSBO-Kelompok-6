@@ -32,24 +32,24 @@ class Seller implements User_activity
     {
         $id_seller = collect(DB::select('select id from sellers where username = ?', [$username]))->pluck('id');
         $item = new Item();
-        $item->item_name = $item_name;
-        $item->price = $price;
-        $item->count = $count;
-        $select = DB::select('select * from items where item_name = ? and idseller = ?', [$item->item_name, $id_seller[0]]);
+        $item->set_item_name($item_name);
+        $item->set_price($price);
+        $item->set_count($count);
+        $select = DB::select('select * from items where item_name = ? and idseller = ?', [$item->get_item_name(), $id_seller[0]]);
 
         if(!$select)
         {
             DB::table('items')->insert([
                 'idseller' => $id_seller[0],
-                'item_name' => $item->item_name,
-                'price' => $item->price,
-                'count' => $item->count
+                'item_name' => $item->get_item_name(),
+                'price' => $item->get_price(),
+                'count' => $item->get_count()
             ]);
         }
         else
         {
-            $count_prev = collect(DB::select('select count from items where item_name = ? and idseller = ?', [$item->item_name, $id_seller[0]]))->pluck('count');
-            $affected = DB::table('items')->where('idseller', $id_seller[0])->where('item_name', $item->item_name)->update(['count' => $count_prev[0] + $count]);
+            $count_prev = collect(DB::select('select count from items where item_name = ? and idseller = ?', [$item->get_item_name(), $id_seller[0]]))->pluck('count');
+            $affected = DB::table('items')->where('idseller', $id_seller[0])->where('item_name', $item->get_item_name())->update(['count' => $count_prev[0] + $count]);
         }
     }
 
@@ -90,5 +90,20 @@ class Seller implements User_activity
                 return 2;
             }
         }
+    }
+
+    public function selling_history($username)
+    {
+        $id_seller = collect(DB::select('select id from sellers where username = ?', [$username]))->pluck('id');
+        $history = DB::select('select * from transactions where idseller = ?', [$id_seller[0]]);
+
+        return $history;
+    }
+
+    public function transfer_amount($username, $amount)
+    {
+        $id_seller = collect(DB::select('select id from sellers where username = ?', [$username]))->pluck('id');
+        $amount_prev = collect(DB::select('select amount from sellers where id = ?', [$id_seller[0]]))->pluck('amount');
+        $affected = DB::table('sellers')->where('id', $id_seller[0])->update(['amount' => $amount_prev[0] - $amount]);
     }
 }

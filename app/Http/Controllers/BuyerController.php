@@ -61,17 +61,61 @@ class BuyerController extends Controller
     public function buy_item(Request $request)
     {
         $user = UserFactory::makeBuyer();
-        $buy = $user->buy_item($request->username);
+        $buy = $user->buy_item($request->buyer_username, $request->seller_username, $request->item, $request->price, $request->count, $request->delivery);
 
-        if(!$items)
+        return response()->json(["message" => "Item bought!"]);
+    }
+
+    public function save_item(Request $request)
+    {
+        $user = UserFactory::makeBuyer();
+        $user->save_item($request->buyer_username, $request->item_name, $request->seller_username);
+
+        return response()->json(["message" => "Item Saved!"]);
+    }
+
+    public function show_saved_items(Request $request)
+    {
+        $user = UserFactory::makeBuyer();
+        $saves = $user->show_saved_items($request->username);
+        
+        if(!$saves)
         {
-            return response()->json(["message" => "No Item!"]);
+            return response()->json(["message" => "No Item Saved!"]);
         }
         else
         {
-            return response()->json(["message" => "Item shown!"]);
+            return response()->json(["message" => "Item in Saved Shown!"]);
         }
     }
 
+    public function delete_save_item(Request $request)
+    {
+        $user = UserFactory::makeBuyer();
+        $user->delete_save_item($request->username, $request->item_name);
+        return response()->json(["message" => "Item deleted from Saved!"]);
+    }
 
+    public function buying_history(Request $request)
+    {
+        $user = UserFactory::makeBuyer();
+        $hist = $user->buying_history($request->username);
+
+        if(!$hist)
+        {
+            return response()->json(["message" => "No buying record found!"]);
+        }
+        else
+        {
+            return response()->json(["message" => "Buying records shown!"]);
+        }
+    }
+
+    public function review_item(Request $request)
+    {
+        $user = UserFactory::makeBuyer();
+        $user->review_item($request->buyer_username, $request->item, $request->seller_username, $request->review);
+
+        return response()->json(["message" => "Review Added!"]);
+    }
 }
